@@ -1,0 +1,11 @@
+./gm  convert /Users/ssaczkowski/Documents/UNGS/ORGAII/RGBmask/img1.png img1.rgb
+
+mv img1.rgb /Users/ssaczkowski/Documents/UNGS/ORGAII/RGBmask/
+
+./gm  convert /Users/ssaczkowski/Documents/UNGS/ORGAII/RGBmask/img2.png img2.rgb
+
+mv img2.rgb /Users/ssaczkowski/Documents/UNGS/ORGAII/RGBmask/
+
+./gm  convert /Users/ssaczkowski/Documents/UNGS/ORGAII/RGBmask/mascara.png mascara.rgb
+
+mv mascara.rgb /Users/ssaczkowski/Documents/UNGS/ORGAII/RGBmask/
