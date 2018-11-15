@@ -9,21 +9,44 @@ void enmascarar_asm(unsigned char *a, unsigned char *b, unsigned char *mask, int
 
 int main(int argc, char* argv[] )
 {	
+
+   if( argc == 6 ) {
+	int i;
+	printf("Ejecutando con parametros: ");
+	for (i=1 ; i<argc; i++){
+		printf("%s ", argv[i]);
+	}
+	printf("\n\n");
+   }	
+   else if( argc > 6 ) {
+      printf("Demasiados Parametros...\n");
+	return 0;
+   }
+   else {
+      printf("Faltan Parametros...\n");
+	return 0;
+   }
+
+
+
 	// Gestionamos los parametros. Faltaría que los parametros entren por consola y no esten Hardcodeados
- 	FILE *file1;
+	FILE *file1;
 	FILE *file2;
 	FILE *fileMascara;
-	int alto = 150;
-	int ancho = 300;
- 	int cant = alto * ancho;
- 	
+	char *imagen1 = argv[1];
+	char *imagen2 = argv[2];
+	char *mascara = argv[3];
+	int ancho =  atoi (argv[4]); //convierte de string a numero
+	int alto = atoi (argv[5]);
+	int cant = alto * ancho;
+	
  	//Gestionamos Imagen1
     unsigned char *punteroImg1;
     punteroImg1 = (unsigned char*) malloc(cant* 3);
     
     if(punteroImg1!= NULL){
-    	printf("Reserve memoria para img1\n");
-		inicializar_imagen(file1,punteroImg1,cant, "img1.rgb");
+    	printf("Reserve memoria para %s\n",imagen1);
+		inicializar_imagen(file1,punteroImg1,cant, imagen1);
 	}
 	
 	//Gestionamos Imagen2
@@ -31,8 +54,8 @@ int main(int argc, char* argv[] )
     punteroImg2 = (unsigned char*) malloc(cant* 3);
     
     if(punteroImg2!= NULL){
-    	printf("Reserve memoria para img2\n");
-		inicializar_imagen(file2,punteroImg2,cant, "img2.rgb");
+    	printf("Reserve memoria para %s\n",imagen2);
+		inicializar_imagen(file2,punteroImg2,cant, imagen2);
 	}
 	
 	//Gestionamos Mascara
@@ -40,8 +63,8 @@ int main(int argc, char* argv[] )
     punteroMascara = (unsigned char*) malloc(cant* 3);
     
     if(punteroMascara!= NULL){
-    	printf("Reserve memoria para mascara\n");
-		inicializar_imagen(fileMascara,punteroMascara,cant, "mascara.rgb");
+	printf("Reserve memoria para %s\n",mascara);
+		inicializar_imagen(fileMascara,punteroMascara,cant,mascara);
 	}
 	
 	metodoGeneral(punteroImg1, punteroImg2, punteroMascara,cant);
@@ -61,7 +84,7 @@ void inicializar_imagen(FILE *file,unsigned char *punteroMemoria,int cant, char*
 	
 	if(!feof(file)){
 		printf("Abri el archivo: ");
-		printf(ruta);
+		printf("%s",ruta);
 		printf("\n");
   		fread(punteroMemoria, 1,(cant*3), file); 	//Posicion de memoria donde guardo los datos, tamaño de cada elemento(1byte),
   												 	//cantidad de elementos a contar, archivo de donde saco los datos.									 	
@@ -105,8 +128,8 @@ void enmascarar_c(unsigned char *a, unsigned char *b, unsigned char *mask, int c
 			
 		}
 	}
-	
-	print_buffer(a,cant);
+	//print_buffer(a,cant);
+	print_buffer(a,10); //imprimo 10 asi se puede visualizar el resto de la info
 }
 
 void enmascarar_asm(unsigned char *a, unsigned char *b, unsigned char *mask, int cant){
@@ -118,14 +141,12 @@ void print_buffer(unsigned char *buffer, int size){
 		printf("\nBuffer of %d elements:\n\n\n", size);
 		
 		int i = 0;
-		for (i; i < size; i++){
-			
+		for (i; i < size; i++){	
 			printf("%d \t\t\t",buffer[i]);
-		
 			printf("\n");
-				
+
 		}
-}
+
 				
-		}
+		
 }
