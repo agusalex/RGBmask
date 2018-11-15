@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <time.h>
 
 void print_buffer(unsigned char *buffer, int size);
 void inicializar_imagen(FILE *file,unsigned char *punteroMemoria,int cant, char* ruta);
@@ -9,7 +10,6 @@ void enmascarar_asm(unsigned char *a, unsigned char *b, unsigned char *mask, int
 
 int main(int argc, char* argv[] )
 {	
-
    if( argc == 6 ) {
 	int i;
 	printf("Ejecutando con parametros: ");
@@ -26,10 +26,8 @@ int main(int argc, char* argv[] )
       printf("Faltan Parametros...\n");
 	return 0;
    }
-
-
-
-	// Gestionamos los parametros. Faltaría que los parametros entren por consola y no esten Hardcodeados
+   
+	//Gestion de Parametros.
 	FILE *file1;
 	FILE *file2;
 	FILE *fileMascara;
@@ -91,17 +89,31 @@ void inicializar_imagen(FILE *file,unsigned char *punteroMemoria,int cant, char*
 	}
 	
     fclose(file);
-    
 }
 
 void metodoGeneral(unsigned char *imagen1, unsigned char *imagen2, unsigned char *mascara, int cantidad){
 	
+	float tiempo1;
+	float tiempo2;
+	time_t tAntes;
+	time_t tDespues;
+	
 	//Funcion que inicie un temporizador
+	tAntes = time(NULL);
 	enmascarar_c(imagen1,imagen2,mascara,cantidad);
 	//Funcion que pare un temporizador
+	tDespues = time(NULL);
+	tiempo1 = difftime(tDespues, tAntes);
+	
 	//Funcion que inicie un temporizador
+	tAntes = time(NULL);
 	enmascarar_asm(imagen1,imagen2,mascara,cantidad);
 	//Funcion que pare un temporizador
+	tDespues = time(NULL);
+	tiempo2 = difftime(tDespues, tAntes);
+	
+	printf("\n%f", tiempo1);
+	printf("\n%f", tiempo2);
 	
 }
 
@@ -111,25 +123,11 @@ void enmascarar_c(unsigned char *a, unsigned char *b, unsigned char *mask, int c
 	{
 		if(mask[i*3]==255 & mask[i*3+1]==255 & mask[i*3+2]==255)
 		{
-			//printf(a[i*3]);
-			//printf(a[i*3+1]);
-			//printf(a[i*3+2]);
-			//printf(a[i*3]);
-			//printf(a[i*3+1]);
-			//printf(a[i*3+2]);
-			
 			a[i*3]=b[i*3];
 			a[i*3+1]=b[i*3+1];
 			a[i*3+2]=b[i*3+2];
-			
-			//printf(a[i*3]);
-			//printf(a[i*3+1]);
-			//printf(a[i*3+2]);
-			
 		}
 	}
-	//print_buffer(a,cant);
-	print_buffer(a,10); //imprimo 10 asi se puede visualizar el resto de la info
 }
 
 void enmascarar_asm(unsigned char *a, unsigned char *b, unsigned char *mask, int cant){
