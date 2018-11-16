@@ -6,7 +6,7 @@ void print_buffer(unsigned char *buffer, int size);
 void inicializar_imagen(FILE *file,unsigned char *punteroMemoria,int cant, char* ruta);
 void metodoGeneral(unsigned char *imagen1, unsigned char *imagen2, unsigned char *mascara, int cantidad);
 void enmascarar_c(unsigned char *a, unsigned char *b, unsigned char *mask, int cant);
-void enmascarar_asm(unsigned char *a, unsigned char *b, unsigned char *mask, int cant);
+extern void enmascararASM(unsigned char *a, unsigned char *b, unsigned char *mask, int cant);
 
 int main(int argc, char* argv[] )
 {	
@@ -28,9 +28,9 @@ int main(int argc, char* argv[] )
    }
    
 	//Gestion de Parametros.
-	FILE *file1;
-	FILE *file2;
-	FILE *fileMascara;
+	FILE *file1=NULL;
+	FILE *file2=NULL;
+	FILE *fileMascara=NULL;
 	char *imagen1 = argv[1];
 	char *imagen2 = argv[2];
 	char *mascara = argv[3];
@@ -105,12 +105,17 @@ void metodoGeneral(unsigned char *imagen1, unsigned char *imagen2, unsigned char
 	tDespues = time(NULL);
 	tiempo1 = difftime(tDespues, tAntes);
 	
+	//Crear un archivo con el resultado en C..
+	
 	//Funcion que inicie un temporizador
 	tAntes = time(NULL);
-	enmascarar_asm(imagen1,imagen2,mascara,cantidad);
+	printf("%p", &imagen1[0]);
+	enmascararASM(imagen1,imagen2,mascara,cantidad);
 	//Funcion que pare un temporizador
 	tDespues = time(NULL);
 	tiempo2 = difftime(tDespues, tAntes);
+
+	//Crear un archivo con el resultado en ASM..
 	
 	printf("\n%f", tiempo1);
 	printf("\n%f", tiempo2);
@@ -121,7 +126,7 @@ void enmascarar_c(unsigned char *a, unsigned char *b, unsigned char *mask, int c
 	int i;
 	for(i=0;i<cant/3;i++)
 	{
-		if(mask[i*3]==255 & mask[i*3+1]==255 & mask[i*3+2]==255)
+		if((mask[i*3]==255)& (mask[i*3+1]==255)& (mask[i*3+2]==255))
 		{
 			a[i*3]=b[i*3];
 			a[i*3+1]=b[i*3+1];
@@ -130,21 +135,15 @@ void enmascarar_c(unsigned char *a, unsigned char *b, unsigned char *mask, int c
 	}
 }
 
-void enmascarar_asm(unsigned char *a, unsigned char *b, unsigned char *mask, int cant){
-	
-}
-
 void print_buffer(unsigned char *buffer, int size){
 	
 		printf("\nBuffer of %d elements:\n\n\n", size);
 		
-		int i = 0;
-		for (i; i < size; i++){	
+		int i;
+		for (i=0; i < size; i++){	
 			printf("%d \t\t\t",buffer[i]);
 			printf("\n");
 
-		}
-
-				
+		}	
 		
 }
