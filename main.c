@@ -7,6 +7,7 @@ void inicializar_imagen(FILE *file,unsigned char *punteroMemoria,int cant, char*
 void metodoGeneral(unsigned char *imagen1, unsigned char *imagen2, unsigned char *mascara, int cantidad);
 void enmascarar_c(unsigned char *a, unsigned char *b, unsigned char *mask, int cant);
 extern void enmascararASM(unsigned char *a, unsigned char *b, unsigned char *mask, int cant);
+void escribirResultado(unsigned char *punteroMemoria, int cant, char* ruta);
 
 int main(int argc, char* argv[] )
 {	
@@ -106,16 +107,17 @@ void metodoGeneral(unsigned char *imagen1, unsigned char *imagen2, unsigned char
 	tiempo1 = difftime(tDespues, tAntes);
 	
 	//Crear un archivo con el resultado en C..
+	escribirResultado(imagen1,cantidad,"salida_c.rgb");
 	
 	//Funcion que inicie un temporizador
 	tAntes = time(NULL);
-	printf("%p", &imagen1[0]);
 	enmascararASM(imagen1,imagen2,mascara,cantidad);
 	//Funcion que pare un temporizador
 	tDespues = time(NULL);
 	tiempo2 = difftime(tDespues, tAntes);
 
 	//Crear un archivo con el resultado en ASM..
+	escribirResultado(imagen2,cantidad,"salida_asm.rgb");
 	
 	printf("\n%f", tiempo1);
 	printf("\n%f", tiempo2);
@@ -133,6 +135,16 @@ void enmascarar_c(unsigned char *a, unsigned char *b, unsigned char *mask, int c
 			a[i*3+2]=b[i*3+2];
 		}
 	}
+}
+
+void escribirResultado(unsigned char *punteroMemoria, int cant, char* ruta)
+{
+	FILE *file;
+
+    file = fopen( ruta , "w" );
+    fwrite(punteroMemoria , 1 , cant , file );
+    
+    fclose(file);
 }
 
 void print_buffer(unsigned char *buffer, int size){
