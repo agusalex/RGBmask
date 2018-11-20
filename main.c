@@ -39,6 +39,8 @@ int main(int argc, char* argv[] )
 	int alto = atoi (argv[5]);
 	int cant = alto * ancho;
 	
+
+	
  	//Gestionamos Imagen1
     unsigned char *punteroImg1;
     punteroImg1 = (unsigned char*) malloc(cant* 3);
@@ -65,7 +67,10 @@ int main(int argc, char* argv[] )
 	printf("Reserve memoria para %s\n",mascara);
 		inicializar_imagen(fileMascara,punteroMascara,cant,mascara);
 	}
-	
+	printf("PARAMETRO %p\n",punteroImg1);
+	printf("PARAMETRO %p\n",punteroImg2);
+	printf("PARAMETRO %p\n",punteroMascara);
+	printf("PARAMETRO %d\n",cant);
 	metodoGeneral(punteroImg1, punteroImg2, punteroMascara,cant);
 
 	//Liberamos los espacion de memoria de malloc
@@ -111,7 +116,7 @@ void metodoGeneral(unsigned char *imagen1, unsigned char *imagen2, unsigned char
 	
 	//Funcion que inicie un temporizador
 	tAntes = time(NULL);
-	enmascararASM(imagen1,imagen2,mascara,cantidad);
+	enmascararASM(imagen1,imagen2,mascara,cantidad/8);
 	//Funcion que pare un temporizador
 	tDespues = time(NULL);
 	tiempo2 = difftime(tDespues, tAntes);
