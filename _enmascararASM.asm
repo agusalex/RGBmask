@@ -10,6 +10,7 @@ ptr1 dd 0
 ptr2 dd 0
 ptrM dd 0
 cant dd 0
+mask dq 0xffffffff
 
 section .text
 extern _printf
@@ -46,6 +47,10 @@ _enmascararASM:
     push dword msg_sigo
     call _printf
     add esp, 8
+    
+    mov EAX, [ptr2]
+    mov EBX, [ptr1]
+    mov EDX, [ptrM]
    
 sigo:
     CMP [cant], ECX
@@ -53,12 +58,23 @@ sigo:
     JMP final
     
 ciclo:
-    ;Muevo la primer porcion de 8 bytes de la primer imagen.
-    movq mm1,[ptr1+ECX*8]
-    ;Muevo la primer porcion de 8 bytes de la mascara.
-    ;movq mm2,[ptrM+ECX*8]
-
-    
+    ;Muevo porcion de 8 bytes de la segunda imagen.
+    movq mm1,[EAX+ECX*8]
+    ;Muevo porcion de 8 bytes de la mascara.          
+    movq mm2,[EDX+ECX*8]
+    ;Hacemos un AND LOGICO EMPAQUETA (PAND) entre mm1 y mm2.
+    PAND mm1,mm2
+    ;Luego invertimos la mascara. PANDN
+    movq mm4, [mask]
+    PANDN mm2,mm4
+    ;Movemos porcion de 8 bytes de la primer imagen. ;mm3
+    movq mm3,[EBX+ECX*8]
+    ;Hacemos un and logico empaquetado (PAND) entre mm3 y mm2
+    PAND mm3,mm2
+    ;Luego Hacemos un POR LOGICO entre mm1 y mm3 
+    POR mm1,mm3;(nos queda lo que queremos de ambas imagenes) 
+    ;Guardamos el resultado en espacio de memoria de IMAGEN 2.    
+    movq [EAX+ECX*8], mm1   
     INC ECX
     JMP sigo
 
