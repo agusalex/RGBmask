@@ -3,6 +3,7 @@
 #include <time.h>
 
 void print_buffer(unsigned char *buffer, int size);
+int multiploOcho(int ancho, int alto);
 void inicializar_imagen(FILE *file,unsigned char *punteroMemoria,int cant, char* ruta);
 void metodoGeneral(unsigned char *imagen1, unsigned char *imagen2, unsigned char *mascara, int cantidad);
 void enmascarar_c(unsigned char *a, unsigned char *b, unsigned char *mask, int cant);
@@ -37,13 +38,13 @@ int main(int argc, char* argv[] )
 	char *mascara = argv[3];
 	int ancho =  atoi (argv[4]); //convierte de string a numero
 	int alto = atoi (argv[5]);
-	int cant = alto * ancho;
+	int cant = multiploOcho(ancho,alto);
 	
 
 	
  	//Gestionamos Imagen1
     unsigned char *punteroImg1;
-    punteroImg1 = (unsigned char*) malloc(cant* 3);
+    punteroImg1 = (unsigned char*) malloc(cant);
     
     if(punteroImg1!= NULL){
     	printf("Reserve memoria para %s\n",imagen1);
@@ -52,7 +53,7 @@ int main(int argc, char* argv[] )
 	
 	//Gestionamos Imagen2
     unsigned char *punteroImg2;
-    punteroImg2 = (unsigned char*) malloc(cant* 3);
+    punteroImg2 = (unsigned char*) malloc(cant);
     
     if(punteroImg2!= NULL){
     	printf("Reserve memoria para %s\n",imagen2);
@@ -61,7 +62,7 @@ int main(int argc, char* argv[] )
 	
 	//Gestionamos Mascara
     unsigned char *punteroMascara;
-    punteroMascara = (unsigned char*) malloc(cant* 3);
+    punteroMascara = (unsigned char*) malloc(cant);
     
     if(punteroMascara!= NULL){
 	printf("Reserve memoria para %s\n",mascara);
@@ -84,13 +85,13 @@ int main(int argc, char* argv[] )
 
 void inicializar_imagen(FILE *file,unsigned char *punteroMemoria,int cant, char* ruta){
 	
-	file = fopen(ruta, "r+b"); 
+	file = fopen(ruta, "rb+"); 
 	
 	if(!feof(file)){
 		printf("Abri el archivo: ");
 		printf("%s",ruta);
 		printf("\n");
-  		fread(punteroMemoria, 1,(cant*3), file); 	//Posicion de memoria donde guardo los datos, tamaño de cada elemento(1byte),
+  		fread(punteroMemoria, 1,cant, file); 	//Posicion de memoria donde guardo los datos, tamaño de cada elemento(1byte),
   												 	//cantidad de elementos a contar, archivo de donde saco los datos.									 	
 	}
 	
@@ -106,6 +107,7 @@ void metodoGeneral(unsigned char *imagen1, unsigned char *imagen2, unsigned char
 	
 	//Funcion que inicie un temporizador
 	tAntes = time(NULL);
+		escribirResultado(imagen1,cantidad,"out.rgb");
 	enmascarar_c(imagen1,imagen2,mascara,cantidad);
 	//Funcion que pare un temporizador
 	tDespues = time(NULL);
@@ -128,6 +130,18 @@ void metodoGeneral(unsigned char *imagen1, unsigned char *imagen2, unsigned char
 	printf("\n%f", tiempo2);
 	
 }
+int multiploOcho(int ancho, int alto){
+	
+	int bytes = (ancho*alto)*3;	
+	int resto = bytes%8;
+	if(resto==0){
+		return bytes;
+	}
+	else{
+		int diferencia = 8-resto;
+		return bytes + diferencia;
+	}
+}
 
 void enmascarar_c(unsigned char *a, unsigned char *b, unsigned char *mask, int cant){
 	int i;
@@ -146,7 +160,7 @@ void escribirResultado(unsigned char *punteroMemoria, int cant, char* ruta)
 {
 	FILE *file;
 
-    file = fopen( ruta , "w" );
+    file = fopen( ruta , "w+" );
     fwrite(punteroMemoria , 1 , cant , file );
     
     fclose(file);
