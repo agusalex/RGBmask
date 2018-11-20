@@ -85,7 +85,7 @@ int main(int argc, char* argv[] )
 
 void inicializar_imagen(FILE *file,unsigned char *punteroMemoria,int cant, char* ruta){
 	
-	file = fopen(ruta, "rb+"); 
+	file = fopen(ruta, "rb"); 
 	
 	if(!feof(file)){
 		printf("Abri el archivo: ");
@@ -107,7 +107,6 @@ void metodoGeneral(unsigned char *imagen1, unsigned char *imagen2, unsigned char
 	
 	//Funcion que inicie un temporizador
 	tAntes = time(NULL);
-		escribirResultado(imagen1,cantidad,"out.rgb");
 	enmascarar_c(imagen1,imagen2,mascara,cantidad);
 	//Funcion que pare un temporizador
 	tDespues = time(NULL);
@@ -160,7 +159,7 @@ void escribirResultado(unsigned char *punteroMemoria, int cant, char* ruta)
 {
 	FILE *file;
 
-    file = fopen( ruta , "w+" );
+    file = fopen( ruta , "wb" );
     fwrite(punteroMemoria , 1 , cant , file );
     
     fclose(file);
@@ -171,7 +170,8 @@ void print_buffer(unsigned char *buffer, int size){
 		printf("\nBuffer of %d elements:\n\n\n", size);
 		
 		int i;
-		for (i=0; i < size; i++){	
+		for (i=0; i < size; i++){
+			printf(" %d",i);
 			printf("%d \t\t\t",buffer[i]);
 			printf("\n");
 

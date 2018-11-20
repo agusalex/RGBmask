@@ -9,3 +9,9 @@ mv img2.rgb /Users/ssaczkowski/Documents/UNGS/ORGAII/RGBmask/
 ./gm  convert /Users/ssaczkowski/Documents/UNGS/ORGAII/RGBmask/mascara.png mascara.rgb
 
 mv mascara.rgb /Users/ssaczkowski/Documents/UNGS/ORGAII/RGBmask/
+
+
+Para Pasar de RGB a JPG:
+
+
+gm convert -size 300x150 -depth 8 salida_c.rgb imagenC.jpg
