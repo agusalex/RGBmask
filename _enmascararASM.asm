@@ -32,27 +32,26 @@ _enmascararASM:
     xor EAX,EAX
     mov EAX,[EBP+20]
     mov [cant],EAX    ;cantidad de bytes
-  
-    push dword [cant]
+  ;Para Imrprimir
+    push dword [cant] ;pusheo para imprimir
     push dword [ptrM]
     push dword [ptr2]
     push dword [ptr1]
     push dword msg1
     call _printf
     add esp, 20
-    
+   ;Termina impresion comienza otra impresion
+   ;Pruebo el ECX para ver si vale 0
     mov ECX,0
     
-    push dword ECX
-    push dword msg_sigo
-    call _printf
-    add esp, 8
-    
+ 
+  
     mov EAX, [ptr2]
     mov EBX, [ptr1]
     mov EDX, [ptrM]
    
 sigo:
+
     CMP [cant], ECX
     JNZ ciclo
     JMP final
@@ -80,12 +79,11 @@ ciclo:
 
 
 final:
-    ;ACA TENEMOS QUE LIMPIAR LOS REGISTROS SUBIR EL RESULTADO A LA PILA O AL RETURN
-    
+        
     push dword ECX
-    push dword msg_sigo
+    push dword msg_debug
     call _printf
-    add esp, 8
-    
+    add esp, 8  
     add ESP, 56
+    leave ;Esto salva todo, sin esto no termina
     ret

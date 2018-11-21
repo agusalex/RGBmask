@@ -118,12 +118,14 @@ void metodoGeneral(unsigned char *imagen1, unsigned char *imagen2, unsigned char
 	//Funcion que inicie un temporizador
 	tAntes = time(NULL);
 	enmascararASM(imagen1,imagen2,mascara,cantidad/8);
+	printf("termino la funcion asembler");
 	//Funcion que pare un temporizador
 	tDespues = time(NULL);
 	tiempo2 = difftime(tDespues, tAntes);
-
+	
 	//Crear un archivo con el resultado en ASM..
 	escribirResultado(imagen2,cantidad,"salida_asm.rgb");
+	
 	
 	printf("\n%f", tiempo1);
 	printf("\n%f", tiempo2);
