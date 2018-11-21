@@ -142,6 +142,8 @@ void metodoGeneral(unsigned char *imagen1, unsigned char *imagen2, unsigned char
 	//Crear un archivo con el resultado en ASM..
 	escribirResultado(imagen2,cantidad,"salida_asm.rgb");
 	
+	printf("\nTamaño en bytes: %d", cantidad);
+	
 	printf("\nTiempo2: \n%f milliseconds", tiempo2);
 
 	printf("\nTiempo1: \n%f milliseconds", tiempo1);
