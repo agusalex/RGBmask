@@ -125,7 +125,7 @@ void metodoGeneral(unsigned char *imagen1, unsigned char *imagen2, unsigned char
 	
 	//Funcion que inicie un temporizador
 	start_time = clock();
-	enmascararASM(imagen1,imagen2,mascara,cantidad/8);
+	enmascararASM(imagen1,imagen2,mascara,cantidad/8); //en linux arroja segmentation fault
 	printf("termino la funcion asembler");
 	end_time = clock(); 
 	//Funcion que pare un temporizador
@@ -146,7 +146,12 @@ void metodoGeneral(unsigned char *imagen1, unsigned char *imagen2, unsigned char
 	
 	printf("\nTiempo2: \n%f milliseconds", tiempo2);
 
-	printf("\nTiempo1: \n%f milliseconds", tiempo1);
+	printf("\nTiempo1: \n%f milliseconds\n", tiempo1);
+
+  	FILE *out = fopen("results", "a");  
+   	fprintf(out, "%s %d %s %f %s %f", "\n", cantidad, " , ", tiempo1," , ", tiempo2);
+  	fclose(out);  
+ 
 	
 	
 }
