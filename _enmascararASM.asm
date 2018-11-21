@@ -10,7 +10,8 @@ ptr1 dd 0
 ptr2 dd 0
 ptrM dd 0
 cant dd 0
-mask dq 0xffffffff
+;mask dq 0xffffffff
+mask dq 0xffffffffffffffffffffffffff ;necesita muchas fefes
 
 section .text
 extern _printf
@@ -65,6 +66,7 @@ ciclo:
     PAND mm1,mm2
     ;Luego invertimos la mascara. PANDN
     movq mm4, [mask]
+    ;movq mm4, [EDX+ECX*8]
     PANDN mm2,mm4
     ;Movemos porcion de 8 bytes de la primer imagen. ;mm3
     movq mm3,[EBX+ECX*8]
