@@ -11,7 +11,7 @@ ptr2 dd 0
 ptrM dd 0
 cant dd 0
 ;mask dq 0xffffffff
-mask dq 0xffffffffffffffffffffffffff ;necesita muchas fefes
+mask dq 0xffffffffffffffff ;necesita muchas fefes
 
 section .text
 extern _printf
