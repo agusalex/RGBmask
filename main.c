@@ -9,7 +9,16 @@ void metodoGeneral(unsigned char *imagen1, unsigned char *imagen2, unsigned char
 void enmascarar_c(unsigned char *a, unsigned char *b, unsigned char *mask, int cant);
 extern void enmascararASM(unsigned char *a, unsigned char *b, unsigned char *mask, int cant);
 void escribirResultado(unsigned char *punteroMemoria, int cant, char* ruta);
-
+void delay(int milli_seconds ) 
+{ 
+    
+    // Stroing start time 
+    clock_t start_time = clock(); 
+  
+    // looping till required time is not acheived 
+    while (clock() < start_time + milli_seconds) 
+        ; 
+}
 int main(int argc, char* argv[] )
 {	
    if( argc == 6 ) {
@@ -100,35 +109,43 @@ void inicializar_imagen(FILE *file,unsigned char *punteroMemoria,int cant, char*
 
 void metodoGeneral(unsigned char *imagen1, unsigned char *imagen2, unsigned char *mascara, int cantidad){
 	
-	float tiempo1;
-	float tiempo2;
-	time_t tAntes;
-	time_t tDespues;
+
+	
 	
 	//Funcion que inicie un temporizador
-	tAntes = time(NULL);
+	clock_t start_time = clock(); 
+	
 	enmascarar_c(imagen1,imagen2,mascara,cantidad);
 	//Funcion que pare un temporizador
-	tDespues = time(NULL);
-	tiempo1 = difftime(tDespues, tAntes);
+	clock_t end_time = clock(); 
+	double tiempo1= end_time-start_time;
 	
 	//Crear un archivo con el resultado en C..
 	escribirResultado(imagen1,cantidad,"salida_c.rgb");
 	
 	//Funcion que inicie un temporizador
-	tAntes = time(NULL);
+	start_time = clock();
 	enmascararASM(imagen1,imagen2,mascara,cantidad/8);
 	printf("termino la funcion asembler");
+	end_time = clock(); 
 	//Funcion que pare un temporizador
-	tDespues = time(NULL);
-	tiempo2 = difftime(tDespues, tAntes);
+	double padding= 0; //padding porque sino imprime basura
+	padding=padding+0;
+	double tiempo2= end_time-start_time;
+	if(tiempo1<10){  //Elimino margen de error
+		tiempo1=0;
+	}
+	if(tiempo2<10){ //Elimino margen de error
+		tiempo2=0;
+	}
 	
 	//Crear un archivo con el resultado en ASM..
 	escribirResultado(imagen2,cantidad,"salida_asm.rgb");
 	
+	printf("\nTiempo2: \n%f milliseconds", tiempo2);
+
+	printf("\nTiempo1: \n%f milliseconds", tiempo1);
 	
-	printf("\n%f", tiempo1);
-	printf("\n%f", tiempo2);
 	
 }
 int multiploOcho(int ancho, int alto){
