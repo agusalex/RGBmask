@@ -9,8 +9,8 @@ void metodoGeneral(unsigned char *imagen1, unsigned char *imagen2, unsigned char
 void enmascarar_c(unsigned char *a, unsigned char *b, unsigned char *mask, int cant);
 extern void enmascararASM(unsigned char *a, unsigned char *b, unsigned char *mask, int cant);
 void escribirResultado(unsigned char *punteroMemoria, int cant, char* ruta);
-void delay(int milli_seconds ) 
-{ 
+void delay(int milli_seconds ){
+
     
     // Stroing start time 
     clock_t start_time = clock(); 
@@ -19,8 +19,8 @@ void delay(int milli_seconds )
     while (clock() < start_time + milli_seconds) 
         ; 
 }
-int main(int argc, char* argv[] )
-{	
+
+int main(int argc, char* argv[] ){	
    if( argc == 6 ) {
 	int i;
 	printf("Ejecutando con parametros: ");
@@ -48,8 +48,6 @@ int main(int argc, char* argv[] )
 	int ancho =  atoi (argv[4]); //convierte de string a numero
 	int alto = atoi (argv[5]);
 	int cant = multiploOcho(ancho,alto);
-	
-
 	
  	//Gestionamos Imagen1
     unsigned char *punteroImg1;
@@ -109,9 +107,6 @@ void inicializar_imagen(FILE *file,unsigned char *punteroMemoria,int cant, char*
 
 void metodoGeneral(unsigned char *imagen1, unsigned char *imagen2, unsigned char *mascara, int cantidad){
 	
-
-	
-	
 	//Funcion que inicie un temporizador
 	clock_t start_time = clock(); 
 	
@@ -143,13 +138,12 @@ void metodoGeneral(unsigned char *imagen1, unsigned char *imagen2, unsigned char
 	escribirResultado(imagen2,cantidad,"salida_asm.rgb");
 	
 	printf("\nTamaño en bytes: %d", cantidad);
-	
-	printf("\nTiempo2: \n%f milliseconds", tiempo2);
 
-	printf("\nTiempo1: \n%f milliseconds", tiempo1);
+	printf("   Tiempo en C: %f milliseconds", tiempo1);
 	
-	
+	printf("   Tiempo en ASM: %f milliseconds", tiempo2);
 }
+
 int multiploOcho(int ancho, int alto){
 	
 	int bytes = (ancho*alto)*3;	
@@ -176,8 +170,7 @@ void enmascarar_c(unsigned char *a, unsigned char *b, unsigned char *mask, int c
 	}
 }
 
-void escribirResultado(unsigned char *punteroMemoria, int cant, char* ruta)
-{
+void escribirResultado(unsigned char *punteroMemoria, int cant, char* ruta){
 	FILE *file;
 
     file = fopen( ruta , "wb" );
