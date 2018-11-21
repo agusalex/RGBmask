@@ -16,6 +16,7 @@ section .text
 extern _printf
 
 _enmascararASM:
+    mov ebp, esp; for correct debugging
     push EBP
     mov  EBP,ESP
     
@@ -42,11 +43,6 @@ _enmascararASM:
     add esp, 20
     
     mov ECX,0
-    
-    push dword ECX
-    push dword msg_sigo
-    call _printf
-    add esp, 8
     
     mov EAX, [ptr2]
     mov EBX, [ptr1]
@@ -81,11 +77,5 @@ ciclo:
 
 final:
     ;ACA TENEMOS QUE LIMPIAR LOS REGISTROS SUBIR EL RESULTADO A LA PILA O AL RETURN
-    
-    push dword ECX
-    push dword msg_sigo
-    call _printf
-    add esp, 8
-    
     add ESP, 56
     ret
