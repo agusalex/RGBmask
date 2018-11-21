@@ -49,6 +49,10 @@ int main(int argc, char* argv[] ){
 	int alto = atoi (argv[5]);
 	int cant = multiploOcho(ancho,alto);
 	
+	FILE *out = fopen("results.csv", "a");  
+   	fprintf(out, "%d %s %d", ancho, " , ", alto);
+  	fclose(out);  
+	
  	//Gestionamos Imagen1
     unsigned char *punteroImg1;
     punteroImg1 = (unsigned char*) malloc(cant);
@@ -127,12 +131,12 @@ void metodoGeneral(unsigned char *imagen1, unsigned char *imagen2, unsigned char
 	double padding= 0; //padding porque sino imprime basura
 	padding=padding+0;
 	double tiempo2= end_time-start_time;
-	if(tiempo1<10){  //Elimino margen de error
+	/*if(tiempo1<10){  //Elimino margen de error
 		tiempo1=0;
-	}
-	if(tiempo2<10){ //Elimino margen de error
+	}*/
+	/*if(tiempo2<10){ //Elimino margen de error
 		tiempo2=0;
-	}
+	}*/
 	
 	//Crear un archivo con el resultado en ASM..
 	escribirResultado(imagen2,cantidad,"salida_asm.rgb");
@@ -142,6 +146,10 @@ void metodoGeneral(unsigned char *imagen1, unsigned char *imagen2, unsigned char
 	printf("   Tiempo en C: %f milliseconds", tiempo1);
 	
 	printf("   Tiempo en ASM: %f milliseconds", tiempo2);
+	//guardo resultado en csv
+	FILE *out = fopen("results.csv", "a");  
+   	fprintf(out, "%s %f %s %f %s", " , ", tiempo1," , ", tiempo2,"\n");
+  	fclose(out);  
 }
 
 int multiploOcho(int ancho, int alto){

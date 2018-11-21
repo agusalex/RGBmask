@@ -59,3 +59,9 @@ Mkfile.old
 dkms.conf
 
 # End of https://www.gitignore.io/api/c
+img2.rgb
+img1.rgb
+salida_asm.rgb
+salida_c.rgb
+salida_c.rgb
+out.png
