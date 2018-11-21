@@ -1,5 +1,10 @@
 # RGBmask
 Tp Organizacion del computador II
-gcc main.c -o main
-./main img1.rgb img2.rgb mascara.rgb 150 300
+# Requisitos
+## NASM
+`sudo apt-get install nasm`
+## GRAPHICS MAGIC
+https://gist.github.com/colinbowern/7a20a65c586ab02bb83775a18b506378
+## RGBmask
+`sh script_linux.sh`
 
