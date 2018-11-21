@@ -1,4 +1,4 @@
-global _enmascararASM
+global enmascararASM
 
 section .data
 msg1 db "IMG1 %p ,IMG2 %p ,ptrM %p, cant %d ",10,0
@@ -14,9 +14,9 @@ cant dd 0
 mask dq 0xffffffffffffffff ;necesita muchas fefes
 
 section .text
-extern _printf
+extern printf
 
-_enmascararASM:
+enmascararASM:
     push EBP
     mov  EBP,ESP
     
@@ -39,7 +39,7 @@ _enmascararASM:
     push dword [ptr2]
     push dword [ptr1]
     push dword msg1
-    call _printf
+    call printf
     add esp, 20
    ;Termina impresion comienza otra impresion
    ;Pruebo el ECX para ver si vale 0
@@ -84,7 +84,7 @@ final:
         
     push dword ECX
     push dword msg_debug
-    call _printf
+    call printf
     add esp, 8  
     add ESP, 56
     leave ;Esto salva todo, sin esto no termina
