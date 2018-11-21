@@ -10,13 +10,13 @@ ptr1 dd 0
 ptr2 dd 0
 ptrM dd 0
 cant dd 0
-mask dq 0xffffffff
+;mask dq 0xffffffff
+mask dq 0xffffffffffffffffffffffffff ;necesita muchas fefes
 
 section .text
 extern _printf
 
 _enmascararASM:
-    mov ebp, esp; for correct debugging
     push EBP
     mov  EBP,ESP
     
@@ -33,22 +33,26 @@ _enmascararASM:
     xor EAX,EAX
     mov EAX,[EBP+20]
     mov [cant],EAX    ;cantidad de bytes
-  
-    push dword [cant]
+  ;Para Imrprimir
+    push dword [cant] ;pusheo para imprimir
     push dword [ptrM]
     push dword [ptr2]
     push dword [ptr1]
     push dword msg1
     call _printf
     add esp, 20
-    
+   ;Termina impresion comienza otra impresion
+   ;Pruebo el ECX para ver si vale 0
     mov ECX,0
     
+ 
+  
     mov EAX, [ptr2]
     mov EBX, [ptr1]
     mov EDX, [ptrM]
    
 sigo:
+
     CMP [cant], ECX
     JNZ ciclo
     JMP final
@@ -62,6 +66,7 @@ ciclo:
     PAND mm1,mm2
     ;Luego invertimos la mascara. PANDN
     movq mm4, [mask]
+    ;movq mm4, [EDX+ECX*8]
     PANDN mm2,mm4
     ;Movemos porcion de 8 bytes de la primer imagen. ;mm3
     movq mm3,[EBX+ECX*8]
@@ -76,6 +81,11 @@ ciclo:
 
 
 final:
-    ;ACA TENEMOS QUE LIMPIAR LOS REGISTROS SUBIR EL RESULTADO A LA PILA O AL RETURN
+        
+    push dword ECX
+    push dword msg_debug
+    call _printf
+    add esp, 8  
     add ESP, 56
+    leave ;Esto salva todo, sin esto no termina
     ret

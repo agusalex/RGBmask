@@ -36,7 +36,7 @@ int main(int argc, char* argv[] )
 	char *imagen1 = argv[1];
 	char *imagen2 = argv[2];
 	char *mascara = argv[3];
-	int ancho = atoi (argv[4]); //convierte de string a numero
+	int ancho =  atoi (argv[4]); //convierte de string a numero
 	int alto = atoi (argv[5]);
 	int cant = multiploOcho(ancho,alto);
 	
@@ -72,7 +72,6 @@ int main(int argc, char* argv[] )
 	printf("PARAMETRO %p\n",punteroImg2);
 	printf("PARAMETRO %p\n",punteroMascara);
 	printf("PARAMETRO %d\n",cant);
-	
 	metodoGeneral(punteroImg1, punteroImg2, punteroMascara,cant);
 
 	//Liberamos los espacion de memoria de malloc
@@ -101,7 +100,6 @@ void inicializar_imagen(FILE *file,unsigned char *punteroMemoria,int cant, char*
 
 void metodoGeneral(unsigned char *imagen1, unsigned char *imagen2, unsigned char *mascara, int cantidad){
 	
-	unsigned char *punteroImg1 = imagen1;
 	float tiempo1;
 	float tiempo2;
 	time_t tAntes;
@@ -116,17 +114,18 @@ void metodoGeneral(unsigned char *imagen1, unsigned char *imagen2, unsigned char
 	
 	//Crear un archivo con el resultado en C..
 	escribirResultado(imagen1,cantidad,"salida_c.rgb");
-	imagen1 = punteroImg1;
-	escribirResultado(imagen1,cantidad,"recuperado.rgb");
+	
 	//Funcion que inicie un temporizador
 	tAntes = time(NULL);
-	//enmascararASM(imagen1,imagen2,mascara,cantidad/8);
+	enmascararASM(imagen1,imagen2,mascara,cantidad/8);
+	printf("termino la funcion asembler");
 	//Funcion que pare un temporizador
 	tDespues = time(NULL);
 	tiempo2 = difftime(tDespues, tAntes);
-
+	
 	//Crear un archivo con el resultado en ASM..
 	escribirResultado(imagen2,cantidad,"salida_asm.rgb");
+	
 	
 	printf("\n%f", tiempo1);
 	printf("\n%f", tiempo2);
@@ -158,7 +157,8 @@ void enmascarar_c(unsigned char *a, unsigned char *b, unsigned char *mask, int c
 	}
 }
 
-void escribirResultado(unsigned char *punteroMemoria, int cant, char* ruta){
+void escribirResultado(unsigned char *punteroMemoria, int cant, char* ruta)
+{
 	FILE *file;
 
     file = fopen( ruta , "wb" );
