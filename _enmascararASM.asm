@@ -66,7 +66,6 @@ ciclo:
     PAND mm1,mm2
     ;Luego invertimos la mascara. PANDN
     movq mm4, [mask]
-    ;movq mm4, [EDX+ECX*8]
     PANDN mm2,mm4
     ;Movemos porcion de 8 bytes de la primer imagen. ;mm3
     movq mm3,[EBX+ECX*8]
