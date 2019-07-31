@@ -1,5 +1,5 @@
 # RGBmask
-Tp Organizacion del computador II
+C program comparing execution time between SISD (C code) and SIMD (Assembly code using MMX) 
 # Requisitos
 ## NASM
 `sudo apt-get install nasm`
